@@ -1,15 +1,28 @@
-# PiSMS
+# PGPager
 
-PiSMS is a Python-App for the Raspberry Pi by David Darmann.
-It's designed for a Pi with the [Adafruit PiTFT](http://www.adafruit.com/products/1601) on top.
+Send and receive encrypted SMS messages between Raspberry PIs or PGP Smartphone APP and Raspberry PI.
 
-It's touch screen user interface enables you to send and receive PGP encrypted SMS. You can also manage your PGP keys from the user interface. It's developed and tested with an Huawei E303 UMTS USB-Stick but will possibly also work with other Huawei sticks since their interfaces are quite similar.
+Mission
+-------
+
+- Encrypt and sign SMS messages on a Raspberry PI using a touch-sensitive display without NSA bullshit (and other backdoors).
+- Create community to discuss, contribute and review code.
+- Create a 3D printer casing (including battery) for the RasPi and the display for everyday use. Should not be bigger than a cigarette package.
+- Create user friendly GUI for everyone.
+- Have fun sending private messages. 
+
+Intro
+-------
+PGPager is a Python-App for the Raspberry PI initially written by David Darmann at [ByteFex.com](http://www.ByteFex.com)
+It's designed for a RasPi with the [Adafruit PiTFT](http://www.adafruit.com/products/1601) on top.
+
+Its touch screen user interface enables you to send and receive PGP encrypted SMS. You can also manage your PGP keys from the user interface. It's developed and tested with an Huawei E303 UMTS USB-Stick but will possibly also work with other Huawei sticks since their interfaces are quite similar.
 
 
 Tech
 -------
 
-PiSMS uses a number of open source projects to work properly:
+PGPager uses a number of open source projects to work properly:
 
 * [pygame] - Set of Python modules designed for writing games.
 * [VKeyboard] - A Python Virtual Keyboard for Adafruit PiTFT and other touch screen devices
@@ -23,11 +36,11 @@ Installation
 
 ### Preparation
 
-I assume that you've got the [Adafruit PiTFT] already working and you can see the text console on the PiTFT. If that's not the case, there is an excellent guide at the [Adafruit Learning System]. Youn can even find a ready to use kernel image there.
+I assume that you've got the [Adafruit PiTFT] already working and you can see the text console on the PiTFT. If that's not the case, there is an excellent guide at the [Adafruit Learning System]. You can even find a ready to use kernel image there.
 
 I also assume that you have an ssh connection to your pi. If not, there's also a lot of [tutorials](http://www.raspberrypi.org/documentation/remote-access/ssh/) for that.
 
-You can use [FileZilla] to copy files to and from your Raspberry Pi in comfort. You find all the settings [here](http://www.raspberrypi.org/documentation/remote-access/ssh/sftp.md).
+You can use [FileZilla] to copy files to and from your Raspberry PI. You find all the settings [here](http://www.raspberrypi.org/documentation/remote-access/ssh/sftp.md).
 
 ### Configure Huawei E303
 This can be quite tricky. When you first plug the UMTS-Stick into your Pi (or any other computer) it will act as a CD drive. But that's not what we want. We want it to act as a network interface to give us internet access. That way we can also use the web interface to send and receive SMS messages.
@@ -76,11 +89,11 @@ iface eth1 inet dhcp
 
 After yet another reboot, the Pi should get an IP address from the E303. If your home network (for ssh access) is also a 192.168.1.0 network you could now get trouble, since the Huawei Stick also uses that network.
 
-PiSMS assumes that the E303 doesn't ask for a PIN Code and it auto-connects to the internet. You can configure this settings from the E303's web interface (just plug it into your Computer).
+PGPager assumes that the E303 doesn't ask for a PIN Code and it auto-connects to the internet. You can configure this settings from the E303's web interface (just plug it into your Computer).
 
 ### Install necessary packages
 
-PiSMS needs a few packages installed. I assume that you are running Raspbian and therefore list only those which are not already included.
+PGPager needs a few packages installed. I assume that you are running Raspbian and therefore list only those which are not already included.
 
 #### Install PIP
 [PIP](https://pypi.python.org/pypi/pip) is a tool for installing and managing Python packages. To install it, use the following commands on your Pi
@@ -92,7 +105,7 @@ sudo python get-pip.py
 #### Install python-gnupg
 It's now quite easy to install [python-gnupg]. You could just run `sudo pip install python-gnupg`.
 
-However, you need at least version 0.3.7 because PiSMS uses some features added in this version. At this point in time, you can only get it from the [python-gnupg BitBucket Project](https://bitbucket.org/vinay.sajip/python-gnupg/). To install from most recent sources, run
+However, you need at least version 0.3.7 because PGPager uses some features added in this version. At this point in time, you can only get it from the [python-gnupg BitBucket Project](https://bitbucket.org/vinay.sajip/python-gnupg/). To install from most recent sources, run
 ```sh
 sudo apt-get install mercurial
 hg clone https://bitbucket.org/vinay.sajip/python-gnupg
@@ -122,26 +135,26 @@ unzip open-sans.zip *.ttf -d open-sans
 sudo mv open-sans /usr/share/fonts/truetype/open
 ```
 
-### Run PiSMS
+### Run PGPager
 Clone the repository
 ```sh
 cd ~/
-git clone https://github.com/ByteFex/PiSMS.git      #TODO: check this link!!
+git clone https://github.com/ByteFex/PGPager
 ```
 
 start the script
 ```sh
-cd PiSMS
+cd PGPager
 sudo python pisms.py
 ```
 and have fun!
 
-## Run PiSMS on startup
-Maybe you want PiSMS to start automatically when you boot your Pi. With [GNU screen](http://www.gnu.org/software/screen/), that's easy.
+## Run PGPager on startup
+Maybe you want PGPager to start automatically when you boot your Pi. With [GNU screen](http://www.gnu.org/software/screen/), that's easy.
 
 We first need to make the startup-script executable.
 ```sh
-cd ~/PiSMS
+cd ~/PGPager
 chmod +x start_pisms
 ```
 
@@ -159,7 +172,7 @@ Add the following line before `exit 0`
 su - pi -c "screen -dm -S pisms ~/PiSMS/start_pisms"
 ```
 
-You can even take over the session and view debug-output when you ssh into your Pi after PiSMS has started. To do that, use the command
+You can even take over the session and view debug-output when you ssh into your Pi after PGPager has started. To do that, use the command
 ```sh
 screen -DR
 ```
@@ -168,8 +181,10 @@ If you want even more (or different) screen awesomeness, there is a nice [docume
 
 License
 ----
+Owner: ByteFex Langkamp-IT e.U.
 
-GNU General Public License
+[GNU General Public License](http://www.gnu.org/licenses/gpl-2.0.txt)
+
 
 [pygame]:http://www.pygame.org/
 [FileZilla]:https://filezilla-project.org/
