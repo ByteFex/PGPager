@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#Start PiSMS
+cd ~/PiSMS && sudo python pisms.py
